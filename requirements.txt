@@ -85,3 +85,4 @@ zope.interface
 dnspython
 gunicorn
 keras
+scikit-learn
