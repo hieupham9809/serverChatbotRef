@@ -18,7 +18,7 @@ def extract_and_get_intent(message):
     list_label=['contact','register','activity','work','joiner']
     le = preprocessing.LabelEncoder()
     le.fit_transform(list_label)
-    return str(le.inverse_transform(pred_result)[0])
+    return str(le.inverse_transform(pred_result)[0]),tfidf_svc_clf.decision_function(X)
 
 
 
