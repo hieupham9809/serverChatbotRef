@@ -42,7 +42,7 @@ def server_error(e):
 
 @app.route('/api/LT-conversation-manager', methods=['POST'])
 def post_api():
-    input_data = request.json
+    input_data = request.get_json(force=True)
     print(input_data)
     if "message" not in input_data.keys(): 
         return msg(400, "Message cannot be None")
