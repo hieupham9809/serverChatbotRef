@@ -60,7 +60,10 @@ def post_api_extract_information():
         return msg(400, "Message cannot be None")
     else:
         message = input_data["message"]
+        print(message)
         emails,phones,names=extract_information(message)
+        print(emails)
+        print(phones)
     return jsonify({"code":200,"emails":emails,"phones":phones,"names":names})
 
 if __name__ == '__main__':
