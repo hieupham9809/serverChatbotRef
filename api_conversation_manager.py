@@ -16,8 +16,8 @@ CORS(app)
 
 from intent_regconizer_activity import extract_and_get_intent
 from information_extractor import extract_information
-app.config["MONGO_URI"] = "mongodb://caochanhduong:bikhungha1@ds261626.mlab.com:61626/activity?retryWrites=false"
-mongo = PyMongo(app)
+# app.config["MONGO_URI"] = "mongodb://caochanhduong:bikhungha1@ds261626.mlab.com:61626/activity?retryWrites=false"
+# mongo = PyMongo(app)
 def msg(code, mess=None):
     if code == 200 and mess is None:
         return jsonify({"code":200, "value": True})
@@ -68,18 +68,18 @@ def post_api_extract_information():
         print(phones)
     return jsonify({"code":200,"emails":emails,"phones":phones,"names":names})
 
-@app.route("/api/LT-conversation-manager/messages",methods=['POST'])
-def user_profile():
-    input_data = request.json
-    print(input_data)
-    if "message" not in input_data.keys(): 
-        return msg(400, "Message cannot be None")
-    if "intent" not in input_data.keys():
-        return msg(400, "Intent cannot be None")
-    message = input_data["message"]
-    intent=input_data["intent"]
-    mongo.db.messages.insert_one({"message": message,"intent":intent})
-    return jsonify({"code":200,"message":message})
+# @app.route("/api/LT-conversation-manager/messages",methods=['POST'])
+# def user_profile():
+#     input_data = request.json
+#     print(input_data)
+#     if "message" not in input_data.keys(): 
+#         return msg(400, "Message cannot be None")
+#     if "intent" not in input_data.keys():
+#         return msg(400, "Intent cannot be None")
+#     message = input_data["message"]
+#     intent=input_data["intent"]
+#     mongo.db.messages.insert_one({"message": message,"intent":intent})
+#     return jsonify({"code":200,"message":message})
 
 if __name__ == '__main__':
     app.run()
