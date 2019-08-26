@@ -14,7 +14,8 @@ cycler
 defusedxml                        
 entrypoints                       
 Flask                             
-Flask-Cors                        
+Flask-Cors
+Flask-PyMongo                        
 fuzzywuzzy                        
 gast                              
 grpcio                                                                                                     
