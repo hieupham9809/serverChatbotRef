@@ -5,6 +5,7 @@
 
 
 # chạy mining nhớ exclude intent
+from data_utils.check_question import check_question
 from information_extractor import extract_information
 from intent_regconizer_activity import extract_and_get_intent
 import time
@@ -89,6 +90,20 @@ def user_profile():
         {"user_id": user_id, "message": message, "intent": intent, "is_correct": is_correct})
         
     return jsonify({"code": 200, "message": "insert successed!"})
+
+@app.route('/api/LT-conversation-manager/classify-message', methods=['POST'])
+def post_api_classify_message():
+    input_data = request.get_json(force=True)
+    print(input_data)
+    if "message" not in input_data.keys():
+        return msg(400, "Message cannot be None")
+    else:
+        message = input_data["message"]
+        if check_question(message):
+            result, probability = extract_and_get_intent(message)
+        else:
+            result=""
+    return jsonify({"is_question": check_question(message), "intent": result})
 
 
 if __name__ == '__main__':
