@@ -39,6 +39,9 @@ def check_question(message):
         if (message.lower().find(subject+" cần")!=-1 and message.lower().find("thông tin")!=-1 and message.lower().find(subject+" cần")<message.lower().find("thông tin")):
             print("4")
             return True
+        if (message.lower().find(subject+" muốn")!=-1 and message.lower().find("thông tin")!=-1 and message.lower().find(subject+" muốn")<message.lower().find("thông tin")):
+            print("4")
+            return True
         if (message.lower().find("gửi "+subject)!=-1):
             print("5")
             return True
