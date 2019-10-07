@@ -99,10 +99,11 @@ def post_api_classify_message():
         return msg(400, "Message cannot be None")
     else:
         message = input_data["message"]
-        if check_question(message):
-            result, probability = extract_and_get_intent(message)
-        else:
-            result=""
+        # if check_question(message):
+        #     result, probability = extract_and_get_intent(message)
+        # else:
+        #     result=""
+        result, probability = extract_and_get_intent(message)
     return jsonify({"is_question": check_question(message), "intent": result})
 
 

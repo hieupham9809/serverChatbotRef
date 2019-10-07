@@ -1,7 +1,7 @@
 def check_question(message):
     
-    list_question_signal=["sao vậy","không vậy","chưa vậy","thế","nhỉ"," ai"," ai ","ở đâu","ở mô","đi đâu","bao giờ","bao lâu","khi nào","lúc nào","hồi nào","vì sao","tại sao","thì sao","làm sao","như nào","thế nào","cái chi","gì","bao nhiêu","mấy","?","hả","được không","vậy ạ"]
-    list_question_signal_last=["vậy","chưa","không","sao","à","hả"]
+    list_question_signal=["sao vậy","không vậy","chưa vậy","thế"," nhỉ "," ai"," ai ","ở đâu","ở mô","đi đâu","bao giờ","bao lâu","khi nào","lúc nào","hồi nào","vì sao","tại sao","thì sao","làm sao","như nào","thế nào","cái chi","gì","bao nhiêu","mấy","?"," hả ","được không","vậy ạ"]
+    list_question_signal_last=["vậy","chưa","không","sao","à","hả","nhỉ"]
     list_object=["bạn","cậu","ad","anh","chị","admin","em","mày"]
     list_subject=["mình","tôi","tớ","tao","tui"]
     list_verb_want=["hỏi","biết","xin"]
@@ -52,7 +52,7 @@ def check_question(message):
             return True
 
     #bắt YES-NO/WH question mà signal cuối câu 
-    if len(message.split(" "))>3 and (message.split(" ")[-1].lower()=="chưa" or message.split(" ")[-1].lower()=="không" or message.split(" ")[-1].lower()=="ta" or message.split(" ")[-1].lower()=="sao"):
+    if len(message.split(" "))>3 and (message.split(" ")[-1].lower()=="chưa" or message.split(" ")[-1].lower()=="không" or message.split(" ")[-1].lower()=="ta" or message.split(" ")[-1].lower()=="sao" or message.split(" ")[-1].lower()=="nhỉ" or message.split(" ")[-1].lower()=="nào"):
         print("7")
         return True
 
@@ -67,7 +67,7 @@ def check_question(message):
 
     return False
 
-# print("cho mình hỏi thông tin ")
+print(check_question("liên hệ người nào nhỉ"))
 
 # print(check_question("Mình là nữ thì có được đi Mùa hè xanh khoa Máy tính không ad"))
 # print(check_question("Đi Mùa hè xanh ngoài làm đường ra thì mình còn làm gì nữa bạn"))
