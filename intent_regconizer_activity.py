@@ -11,7 +11,7 @@ def extract_and_get_intent(message):
     list_location_notification=["ở đâu","chỗ nào","ở nơi nào","tỉnh nào","huyện nào","khu nào","địa điểm","địa chỉ"]
     list_time_notification=["khi nào","lúc nào","thời gian nào","ngày nào","ngày bao nhiêu","giờ nào","giờ bao nhiêu","mấy giờ","mấy h ","thời gian"]
     list_holder_notification=["ai tổ chức","đơn vị nào tổ chức","đơn vị tổ chức","trường nào tổ chức","clb nào tổ chức","câu lạc bộ nào tổ chức","người tổ chức"]
-    list_reward_notification=["mấy ngày ctxh","mấy điểm rèn luyện","mấy drl","mấy đrl","mấy ngày công tác xã hội","bao nhiêu ngày ctxh","bao nhiêu ctxh","bao nhiêu điểm rèn luyện","bao nhiêu drl","bao nhiêu đrl","bao nhiêu ngày công tác xã hội","điểm rèn luyện","được công tác xã hội","được ctxh"]
+    list_reward_notification=["mấy ngày ctxh","mấy điểm rèn luyện","mấy drl","mấy đrl","mấy ngày công tác xã hội","bao nhiêu ngày ctxh","bao nhiêu ctxh","bao nhiêu điểm rèn luyện","bao nhiêu drl","bao nhiêu đrl","bao nhiêu ngày công tác xã hội","điểm rèn luyện","được công tác xã hội","được ctxh","được thưởng gì"]
     list_yes_no_notification=["có","không","yes","no"]
     list_dont_care_notification=["không quan tâm","kqt","không quan trọng","k quan tâm","ko quan tâm","k quan trọng","ko quan trọng"]
     list_hello_notification=["hi","hello","chào","helo"]
@@ -20,9 +20,12 @@ def extract_and_get_intent(message):
     for notification in list_location_notification:
         if message.find(notification)!=-1:
             return 'location',1.0
+
+
     for notification in list_time_notification:
         if message.find(notification)!=-1:
             return 'time',1.0
+
     for notification in list_holder_notification:
         if message.find(notification)!=-1:
             return 'holder',1.0
