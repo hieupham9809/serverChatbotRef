@@ -548,19 +548,19 @@ def find_all_entity(intent,input_sentence):
     
     result_entity_dict={}
     list_order_entity_name=map_intent_to_list_order_entity_name[intent]
-    print(normalized_input_sentence)
+    # print(normalized_input_sentence)
     if 'time' in list_order_entity_name:
         for pattern_time in list_pattern_time:
             if re.findall(pattern_time,normalized_input_sentence)!=[]:
-                print("pattern_time :{0}".format(pattern_time))
+                # print("pattern_time :{0}".format(pattern_time))
                 if 'time' not in result_entity_dict:
                     result_entity_dict['time'] = delete_last_space_list(re.findall(pattern_time,normalized_input_sentence))
                 else:
                     result_entity_dict['time'].extend(delete_last_space_list(re.findall(pattern_time,normalized_input_sentence)))
                 
                 normalized_input_sentence = re.sub(pattern_time,' '.join(['✪']*(pattern_time.count(' ')+1)),normalized_input_sentence)
-        if 'time' in result_entity_dict:
-            print(result_entity_dict['time'])
+        # if 'time' in result_entity_dict:
+        #     print(result_entity_dict['time'])
     if 'reward' in list_order_entity_name:
         for pattern_reward in list_pattern_reward:
             if re.findall(pattern_reward,normalized_input_sentence)!=[]:
@@ -571,8 +571,8 @@ def find_all_entity(intent,input_sentence):
                     result_entity_dict['reward'].extend(delete_last_space_list(re.findall(pattern_reward,normalized_input_sentence)))
                 
                 normalized_input_sentence = re.sub(pattern_reward,' '.join(['✪']*(pattern_reward.count(' ')+1)),normalized_input_sentence)
-        if 'reward' in result_entity_dict:
-            print(result_entity_dict['reward'])
+        # if 'reward' in result_entity_dict:
+        #     print(result_entity_dict['reward'])
     matching_threshold = 0.0
     longest_common_length, end_common_index = None, None
     
@@ -592,8 +592,8 @@ def find_all_entity(intent,input_sentence):
     for entity_name in map_intent_to_list_order_entity_name[intent]:
         ordered_real_dict[entity_name] = real_dict[entity_name]
     for entity_name, list_entity in ordered_real_dict.items():
-        print(entity_name)
-        print("input sentence: {0}".format(normalized_input_sentence))
+        # print(entity_name)
+        # print("input sentence: {0}".format(normalized_input_sentence))
         if entity_name in ["works","register","reward"]:
             matching_threshold = 0.15
         elif entity_name == "joiner":
@@ -662,8 +662,8 @@ def find_all_entity(intent,input_sentence):
 #             print("longest_common_length: {0}".format(longest_common_length))
 #             print("end_common_index: {0}".format(end_common_index))
 #             print("1. greatest_common_length : {0}".format(greatest_common_length))
-            print(max_match_entity)
-            print("2. greatest entity : {0}".format(list_entity[greatest_entity_index]))
+            # print(max_match_entity)
+            # print("2. greatest entity : {0}".format(list_entity[greatest_entity_index]))
 #             print("2.1 greatest_end_common_index: {0}".format(greatest_end_common_index))
 #             print("3. sentence match: {0}".format(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1]))
             if greatest_common_length >= map_entity_name_to_threshold[entity_name] and max_match_entity > matching_threshold:
@@ -681,7 +681,7 @@ def find_all_entity(intent,input_sentence):
                 list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1] = ["✪"]*greatest_common_length
                 normalized_input_sentence = ' '.join(list_sentence_token)
             catch_entity_threshold_loop = catch_entity_threshold_loop + 1
-            print("output sentence: {0}".format(normalized_input_sentence))
+            # print("output sentence: {0}".format(normalized_input_sentence))
     return result_entity_dict
 
 def process_message_to_user_request(message):
@@ -730,7 +730,7 @@ if __name__ == '__main__':
     # output_test_file.write("Success rate: {0} %".format(100*float(num_success_testcases)/num_testcases))
     # output_test_file.close()
     # testcase_file.close()
-    print(process_message_to_user_request("mình thích âm nhạc thì đi mùa hè xanh khoa máy tính được không"))
+    print(process_message_to_user_request("cho mình xin thông tin đăng kí mùa hè xanh khoa máy tính"))
     # print(find_all_entity("joiner","mình thích âm nhạc thì đi mùa hè xanh khoa máy tính được không",list_extra_word))
     # print(list_extra_word)
     # print(vocab.stoi["sẻ"])

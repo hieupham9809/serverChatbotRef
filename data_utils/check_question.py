@@ -53,7 +53,7 @@ def check_question(message):
 
     #bắt YES-NO/WH question mà signal cuối câu 
     if len(message.split(" "))>3 and (message.split(" ")[-1].lower()=="chưa" or message.split(" ")[-1].lower()=="không" or message.split(" ")[-1].lower()=="ta" or message.split(" ")[-1].lower()=="sao" or message.split(" ")[-1].lower()=="nhỉ" or message.split(" ")[-1].lower()=="nào"):
-        print("7")
+        # print("7")
         return True
 
     #bắt YES-NO question cuối câu có chủ ngữ
@@ -67,7 +67,7 @@ def check_question(message):
 
     return False
 
-print(check_question("liên hệ người nào nhỉ"))
+# print(check_question("liên hệ người nào nhỉ"))
 
 # print(check_question("Mình là nữ thì có được đi Mùa hè xanh khoa Máy tính không ad"))
 # print(check_question("Đi Mùa hè xanh ngoài làm đường ra thì mình còn làm gì nữa bạn"))

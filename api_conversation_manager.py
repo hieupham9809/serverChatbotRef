@@ -14,20 +14,51 @@ import numpy as np
 from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
 from flask_cors import CORS
+from temp_agent_action_gen import *
+from message_handler import *
+from agen_response_gen import *
+
 app = Flask(__name__)
 CORS(app)
+StateTracker_Container = dict()
 
 app.config["MONGO_URI"] = "mongodb://caochanhduong:bikhungha1@ds261626.mlab.com:61626/activity?retryWrites=false"
 mongo = PyMongo(app)
 
+CONSTANT_FILE_PATH = 'constants.json'
+with open(CONSTANT_FILE_PATH) as f:
+    constants = json.load(f)
 
+file_path_dict = constants['db_file_paths']
+DATABASE_FILE_PATH = file_path_dict['database']
+
+database= json.load(open(DATABASE_FILE_PATH,encoding='utf-8'))
+# state_tracker = StateTracker(database, constants)
 def msg(code, mess=None):
     if code == 200 and mess is None:
         return jsonify({"code": 200, "value": True})
     else:
         return jsonify({"code": code, "message": mess}), code
 
+def get_new_id():
+    while (True):
+        _id = str(random.randint(100000, 999999))
+        if _id not in StateTracker_Container.keys():
+            return _id
 
+def process_conversation_POST(state_tracker_id, message):
+    state_tracker = None
+    if state_tracker_id in StateTracker_Container.keys():
+        state_tracker = StateTracker_Container[state_tracker_id]
+    else:
+        print("---------------------------------in model")
+        state_tracker = StateTracker(database, constants)
+        StateTracker_Container[state_tracker_id] = state_tracker
+    dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)        
+    user_action = process_message_to_user_request(message)
+    agent_act = get_agent_response(state_tracker, dqn_agent, user_action)
+    StateTracker_Container[state_tracker_id] = state_tracker
+    return response_craft(agent_act, state_tracker)
 # In[14]:
 @app.route('/')
 def index():
@@ -57,6 +88,21 @@ def post_api():
         probability = probability.tolist()
     return jsonify({"code": 200, "message": result, "probability": probability})
 
+@app.route('/api/cse-assistant-conversation-manager', methods=['POST'])
+def post_api_cse_assistant():
+    input_data = request.json
+    print(input_data)
+    if "message" not in input_data.keys(): 
+        return msg(400, "Message cannot be None")
+    else:
+        message = input_data["message"]
+    if "state_tracker_id" not in input_data.keys(): 
+        state_tracker_id = get_new_id()
+    else:
+        state_tracker_id = input_data["state_tracker_id"]
+    
+    agent_message = process_conversation_POST(state_tracker_id, message)
+    return jsonify({"code": 200, "message": agent_message,"state_tracker_id":state_tracker_id})
 
 @app.route('/api/LT-conversation-manager/extract-information', methods=['POST'])
 def post_api_extract_information():

@@ -5,16 +5,16 @@ import json
 from agent_utils.utils import remove_empty_slots
 import sys, os
 
-CONSTANT_FILE_PATH = 'constants.json'
-with open(CONSTANT_FILE_PATH) as f:
-    constants = json.load(f)
+# CONSTANT_FILE_PATH = 'constants.json'
+# with open(CONSTANT_FILE_PATH) as f:
+#     constants = json.load(f)
 
-file_path_dict = constants['db_file_paths']
-DATABASE_FILE_PATH = file_path_dict['database']
+# file_path_dict = constants['db_file_paths']
+# DATABASE_FILE_PATH = file_path_dict['database']
 
-database= json.load(open(DATABASE_FILE_PATH,encoding='utf-8'))
-state_tracker = StateTracker(database, constants)
-dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)
+# database= json.load(open(DATABASE_FILE_PATH,encoding='utf-8'))
+# state_tracker = StateTracker(database, constants)
+# dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)
 
 def get_agent_response(state_tracker, dqn_agent, user_action, done=False):
     state_tracker.update_state_user(user_action)
@@ -34,6 +34,6 @@ def get_agent_response(state_tracker, dqn_agent, user_action, done=False):
     #     agent_action['inform_slots'][user_request_slot] = inform_value
         # print("inform slot converted: {}".format(agent_action['inform_slots']))
     return agent_action
-user_act = {'intent': 'inform', 'request_slots': {'name_activity': 'UNK'}, 'inform_slots': {'type_activity': ['chương trình']}}
-agent_act = get_agent_response(state_tracker, dqn_agent, user_act)
-print(response_craft(agent_act, state_tracker))
+# user_act = {'intent': 'inform', 'request_slots': {'name_activity': 'UNK'}, 'inform_slots': {'type_activity': ['chương trình']}}
+# agent_act = get_agent_response(state_tracker, dqn_agent, user_act)
+# print(response_craft(agent_act, state_tracker))

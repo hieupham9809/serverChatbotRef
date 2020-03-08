@@ -100,7 +100,7 @@ list_bye_notification=["bye","tạm biệt","bai","gặp lại"]
 with open('real_dict_2000.json','r') as real_dict_file:
     real_dict = json.load(real_dict_file)
 
-with open('constants.json','r') as list_file:
+with open('list_constants.json','r') as list_file:
     list_file_obj = json.load(list_file)
     list_extra_word = list_file_obj['list_extra_word']
 
