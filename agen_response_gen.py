@@ -21,14 +21,15 @@ NOT_FOUND = [
     'Mình không tìm thấy hoạt động nào thỏa mãn các thông tin bạn đã cung cấp, vui lòng điều chỉnh lại giúp mình nhé!'
 ]
 EMPTY_SLOT = [
-    'Bài đăng về hoạt động thỏa mãn điều kiện của bạn nhưng nó không đề cập đến thông tin *request_slot*'
+    'Bài đăng về hoạt động thỏa mãn yêu cầu của bạn nhưng nó không đề cập đến thông tin *request_slot*'
 ]
 def get_greeting_statement():
     return random.choice(GREETING)
 
 MATCH_FOUND = {
     'found': [
-        "Thông tin *found_slot* bạn cần: *found_slot_instance*, bên dưới là hoạt động cụ thể chứa thông tin đó"
+        "Thông tin *found_slot* bạn cần: *found_slot_instance*, bên dưới là hoạt động cụ thể chứa thông tin đó",
+        'Tìm ra rồi nhé! *found_slot* là *found_slot_instance*, bạn có thể kiểm tra lại đầy đủ bài đăng ở bên dưới '
     ],
     'not_found': [
         "Mình không tìm thấy bài đăng chứa thông tin *found_slot* mà bạn cần, bạn xem lại các thông tin đã cung cấp dưới đây và điều chỉnh lại giúp mình nhé!"
@@ -97,13 +98,16 @@ INFORM['reward'] = [
     'Tham gia hoạt động sẽ được *reward_instance*'
 ]
 INFORM['contact'] = [
-    'bạn có thể liên hệ *contact_instance* nhé'
+    'Bạn có thể liên hệ *contact_instance* nhé'
+    
 ]
 INFORM['register'] = [
-    'Để đăng ký bạn có thể làm như sau: *register_instance*'
+    'Để đăng ký bạn có thể làm như sau: *register_instance*',
+    'Bạn có thể *register_instance* để đăng ký nhé'
 ]
 INFORM['joiner'] = [
-    '*joiner* là *joiner_instance* phải không?'
+    '*joiner* là *joiner_instance* phải không?',
+    '*joiner* tham gia hoạt động này là *joiner_instance* đúng không bạn?'
 ]
 INFORM['activity'] = [
     'Đây là hoạt động mình tìm được với yêu cầu hiện tại của bạn: *activity_instance*'
