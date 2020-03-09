@@ -17,7 +17,9 @@ from flask_cors import CORS
 from temp_agent_action_gen import *
 from message_handler import *
 from agen_response_gen import *
-
+from dqn_agent import DQNAgent
+from agent_utils.state_tracker import StateTracker
+from keras import backend as K
 app = Flask(__name__)
 CORS(app)
 StateTracker_Container = dict()
@@ -34,6 +36,7 @@ DATABASE_FILE_PATH = file_path_dict['database']
 
 database= json.load(open(DATABASE_FILE_PATH,encoding='utf-8'))
 # state_tracker = StateTracker(database, constants)
+# dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)    
 def msg(code, mess=None):
     if code == 200 and mess is None:
         return jsonify({"code": 200, "value": True})
@@ -48,14 +51,16 @@ def get_new_id():
 
 def process_conversation_POST(state_tracker_id, message):
     state_tracker = None
+    
     if state_tracker_id in StateTracker_Container.keys():
         state_tracker = StateTracker_Container[state_tracker_id]
     else:
         print("---------------------------------in model")
         state_tracker = StateTracker(database, constants)
         StateTracker_Container[state_tracker_id] = state_tracker
-    dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)        
+        
     user_action = process_message_to_user_request(message)
+    dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)    
     agent_act = get_agent_response(state_tracker, dqn_agent, user_action)
     StateTracker_Container[state_tracker_id] = state_tracker
     return response_craft(agent_act, state_tracker)
@@ -100,8 +105,10 @@ def post_api_cse_assistant():
         state_tracker_id = get_new_id()
     else:
         state_tracker_id = input_data["state_tracker_id"]
-    
+    print(StateTracker_Container)
+    K.clear_session()
     agent_message = process_conversation_POST(state_tracker_id, message)
+    K.clear_session()
     return jsonify({"code": 200, "message": agent_message,"state_tracker_id":state_tracker_id})
 
 @app.route('/api/LT-conversation-manager/extract-information', methods=['POST'])
