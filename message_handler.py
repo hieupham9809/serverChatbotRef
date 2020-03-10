@@ -713,14 +713,8 @@ def process_message_to_user_request(message,state_tracker):
             user_action['inform_slots'] = result_entity_dict
             user_action['request_slots'] = {}
         elif intent == 'anything':
-            list_state = state_tracker.get_state().tolist()
-            slots_dict = state_tracker.slots_dict
-            agent_request_state = list_state[48:60]
-            one_index = list_state.index(1.0)
-            anything_key = 'activity'
-            for key in slots_dict:
-                if slots_dict[key] == one_index:
-                    anything_key = key 
+            last_agent_action = state_tracker.history[-1]
+            anything_key = list(last_agent_action['request_slots'].keys())[0]
             user_action['intent'] = 'inform'
             user_action['inform_slots'] = {anything_key:'anything'}
             user_action['request_slots'] = {}

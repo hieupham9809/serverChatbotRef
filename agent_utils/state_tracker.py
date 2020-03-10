@@ -75,6 +75,10 @@ class StateTracker:
         user_action = self.history[-1]
         db_results_dict = self.db_helper.get_db_results_for_slots(self.current_informs)
         last_agent_action = self.history[-2] if len(self.history) > 1 else None
+        # print("--------------------------user action")
+        # print(user_action)       
+        # print("--------------------------last agent action")
+        # print(last_agent_action)        
 
         # Create one-hot of intents to represent the current user action
         user_act_rep = np.zeros((self.num_intents,))
@@ -118,7 +122,8 @@ class StateTracker:
             for key in last_agent_action['request_slots'].keys():
                 if key in agent_request_slots:
                     agent_request_slots_rep[self.slots_dict[key]] = 1.0
-
+        print("------------------------agent_request_slots_rep")
+        print(agent_request_slots_rep)
         # Value representation of the round num
         turn_rep = np.zeros((1,)) + self.round_num / 5.
 
@@ -151,7 +156,30 @@ class StateTracker:
                 if slot in self.slots_dict and isinstance(value, list) and len(value) > 0:
                     # if slot not in self.current_request_slots:
                     db_binary_slot_rep[self.slots_dict[slot]] = 1.0
-                   
+        
+        print("-------------------begin element")
+        print(user_act_rep)
+        print(user_inform_slots_rep)
+        print(user_request_slots_rep)
+        print(agent_act_rep)
+        print(agent_inform_slots_rep)
+        print(agent_request_slots_rep)
+        print("-------------------end element")
+        print("---------------------begin hstack")
+        list_state = np.hstack(
+            [user_act_rep, user_inform_slots_rep, user_request_slots_rep, agent_act_rep, agent_inform_slots_rep,
+             agent_request_slots_rep]).flatten()
+        print(list_state[:6])
+        print(list_state[12:18])
+        print(list_state[18:30])
+        print(list_state[30:36])
+        print(list_state[36:48])
+        print(list_state[48:60])
+        print("---------------------end hstack")
+
+        # print(np.hstack(
+        #     [user_act_rep, user_inform_slots_rep, user_request_slots_rep, agent_act_rep, agent_inform_slots_rep,
+        #      agent_request_slots_rep]))
 
 
         state_representation = np.hstack(
@@ -227,7 +255,10 @@ class StateTracker:
                 agent_action['inform_slots'][self.match_key] = 'no match available'
             self.current_informs[self.match_key] = agent_action['inform_slots'][self.match_key]
         agent_action.update({'round': self.round_num, 'speaker': 'Agent'})
+        
         self.history.append(agent_action)
+        print("------------------------------------history in update state agent")
+        print(self.history)
 
     def update_state_user(self, user_action):
         """
@@ -250,3 +281,5 @@ class StateTracker:
         user_action.update({'round': self.round_num, 'speaker': 'User'})
         self.history.append(user_action)
         self.round_num += 1
+        print("---------------------------------------------history in update state user")
+        print(self.history)
