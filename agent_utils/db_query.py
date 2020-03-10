@@ -1,7 +1,7 @@
 from collections import defaultdict
 from .dialogue_config import no_query_keys, usersim_default_key
 import copy
-
+from message_handler import compound2unicode
 
 class DBQuery:
     """Queries the database for the state tracker."""
@@ -107,6 +107,8 @@ class DBQuery:
     def check_match_sublist_and_substring(self,list_children,list_parent):
         # print("match sublist")
         count_match=0
+        list_children = [compound2unicode(x) for x in list_children]
+        list_parent = [compound2unicode(x) for x in list_parent]
         for children_value in list_children:
             for parent_value in list_parent:
                 if children_value in parent_value:
@@ -180,7 +182,8 @@ class DBQuery:
 
         #   print("no match: ")
           # print(new_constraints)
-
+        print("-----------------------------available_options")
+        print(available_options)
  
         return available_options
 

@@ -678,10 +678,12 @@ def find_all_entity(intent,input_sentence):
 #             print("2.1 greatest_end_common_index: {0}".format(greatest_end_common_index))
 #             print("3. sentence match: {0}".format(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1]))
             if greatest_common_length >= map_entity_name_to_threshold[entity_name] and max_match_entity > matching_threshold:
-                if entity_name in ['name_activity','type_activity']:
-                    result = list_entity[greatest_entity_index]
-                else:
-                    result = ' '.join(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1])
+                # if entity_name in ['name_activity','type_activity']:
+                #     result = list_entity[greatest_entity_index]
+                # else:
+                #     result = ' '.join(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1])
+                
+                result = ' '.join(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1])
                 if entity_name in result_entity_dict:
 #                     result_entity_dict[entity_name].append(list_entity[greatest_entity_index])
                     result_entity_dict[entity_name].append(result)
