@@ -93,8 +93,10 @@ list_verb_have=["có","được"]
 
 
 #intent not want information
-list_hello_notification=[" hi ","hello","chào","helo"]
-list_bye_notification=["bye","tạm biệt","bai","gặp lại"] 
+list_hello_notification = [" hi ","hello","chào","helo"]
+list_done_notification = ["bye","tạm biệt","bai","gặp lại"] 
+list_thanks_notification = ["cảm ơn","tks","thanks",'thank']
+list_anything_notification = ["sao cũng được","gì cũng được","anything","s cũng được",'j cũng được']
 
 #dictionary
 with open('real_dict_2000.json','r') as real_dict_file:

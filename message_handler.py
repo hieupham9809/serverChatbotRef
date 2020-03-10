@@ -243,6 +243,11 @@ def catch_intent(message):
     while '' in list_token:
         list_token.remove('')
     message_preprocessed=' '.join(list_token)
+    #note : vì notification của anything dễ bị nhầm với check intent (do chứa "cái gì","sao")
+    # nên check trước
+    for notification in list_anything_notification:   
+        if message_preprocessed.lower().find(notification)!=-1:
+            return 'anything',1.0,message_preprocessed
 
     if check_intent(message_preprocessed):
             #remove ? with blank in the last
@@ -259,14 +264,20 @@ def catch_intent(message):
         list_token.remove('')
     message_preprocessed=' '.join(list_token)
 
-    for notification in list_bye_notification:   
+    for notification in list_done_notification:   
         if message_preprocessed.lower().find(notification)!=-1:
-            return 'bye',1.0,message_preprocessed
+            return 'done',1.0,message_preprocessed
 
     for notification in list_hello_notification:   
         if message_preprocessed.lower().find(notification)!=-1:
             return 'hello',1.0,message_preprocessed
-        
+    
+    for notification in list_thanks_notification:   
+        if message_preprocessed.lower().find(notification)!=-1:
+            return 'thanks',1.0,message_preprocessed
+
+
+
     for object in list_object:
         if message_preprocessed.lower().find("hi " +object)!=-1 and len(message_preprocessed.split(' '))<=5:
             return 'hello',1.0,message_preprocessed
@@ -684,25 +695,43 @@ def find_all_entity(intent,input_sentence):
             # print("output sentence: {0}".format(normalized_input_sentence))
     return result_entity_dict
 
-def process_message_to_user_request(message):
-    intent , proba , processed_message = catch_intent(message)
-    user_action = {}
-    if intent not in ['hello','bye','not intent']:
-        result_entity_dict = find_all_entity(intent,processed_message)
-        # print(result_entity_dict)
-        # print(intent)
-        user_action['intent'] = 'request'
-        user_action['inform_slots'] = result_entity_dict
-        user_action['request_slots'] = {intent:'UNK'}
-    elif intent == 'not intent':
-        result_entity_dict = find_all_entity(intent,processed_message)
-        user_action['intent'] = 'inform'
-        user_action['inform_slots'] = result_entity_dict
-        user_action['request_slots'] = {}
+def process_message_to_user_request(message,state_tracker):
+    
+    if isinstance(message,str):
+        intent , proba , processed_message = catch_intent(message)
+        user_action = {}
+        if intent not in ['hello','done','not intent','thanks','anything']:
+            result_entity_dict = find_all_entity(intent,processed_message)
+            # print(result_entity_dict)
+            # print(intent)
+            user_action['intent'] = 'request'
+            user_action['inform_slots'] = result_entity_dict
+            user_action['request_slots'] = {intent:'UNK'}
+        elif intent == 'not intent':
+            result_entity_dict = find_all_entity(intent,processed_message)
+            user_action['intent'] = 'inform'
+            user_action['inform_slots'] = result_entity_dict
+            user_action['request_slots'] = {}
+        elif intent == 'anything':
+            list_state = state_tracker.get_state().tolist()
+            slots_dict = state_tracker.slots_dict
+            agent_request_state = list_state[48:60]
+            one_index = list_state.index(1.0)
+            anything_key = 'activity'
+            for key in slots_dict:
+                if slots_dict[key] == one_index:
+                    anything_key = key 
+            user_action['intent'] = 'inform'
+            user_action['inform_slots'] = {anything_key:'anything'}
+            user_action['request_slots'] = {}
+        else:
+            user_action['intent'] = intent
+            user_action['inform_slots'] = {}
+            user_action['request_slots'] = {}
     else:
-        user_action['intent'] = intent
-        user_action['inform_slots'] = {}
-        user_action['request_slots'] = {}
+        user_action = message
+    # print("-----------------------------user action")
+    # print(user_action)
     return user_action
 
 #TEST
@@ -730,7 +759,8 @@ if __name__ == '__main__':
     # output_test_file.write("Success rate: {0} %".format(100*float(num_success_testcases)/num_testcases))
     # output_test_file.close()
     # testcase_file.close()
-    print(process_message_to_user_request("cho mình xin thông tin đăng kí mùa hè xanh khoa máy tính"))
+    print(catch_intent("cái gì cũng được"))
+    # print(process_message_to_user_request("cho mình xin thông tin đăng kí mùa hè xanh khoa máy tính"))
     # print(find_all_entity("joiner","mình thích âm nhạc thì đi mùa hè xanh khoa máy tính được không",list_extra_word))
     # print(list_extra_word)
     # print(vocab.stoi["sẻ"])
