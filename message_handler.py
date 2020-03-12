@@ -604,6 +604,7 @@ def find_all_entity(intent,input_sentence):
         ordered_real_dict[entity_name] = real_dict[entity_name]
     for entity_name, list_entity in ordered_real_dict.items():
         # print(entity_name)
+        list_entity = [entity.lower() for entity in list_entity]
         # print("input sentence: {0}".format(normalized_input_sentence))
         if entity_name in ["works","register","reward"]:
             matching_threshold = 0.15
@@ -621,6 +622,7 @@ def find_all_entity(intent,input_sentence):
                 #     [{'longest_common_entity_index': 0,
                 #   'longest_common_length': 3,
                 #   'end_common_index': 9}]
+            
 
             ##find the most match longest common match (calculate by length of token match in sentence 
                                                                 #/ length of entity )
@@ -645,7 +647,37 @@ def find_all_entity(intent,input_sentence):
                 longest_common_entity_index = dict_longest_common_entity['longest_common_entity_index']
                 longest_common_length = dict_longest_common_entity['longest_common_length']
                 end_common_index = dict_longest_common_entity['end_common_index']
+                
                 list_sentence_token_match = list_sentence_token[end_common_index - longest_common_length+1:end_common_index+1]
+                if entity_name == "type_activity":
+                    if "ban chỉ huy" in normalized_input_sentence or "ban tổ chức" in normalized_input_sentence or "bch" in normalized_input_sentence or "btc" in normalized_input_sentence:
+                        continue
+                    list_name_activity = ordered_real_dict['name_activity']
+                    check_in_name = False
+                    for name_activity in list_name_activity:
+                        #nếu loại hoạt động nằm trọn trong bất kì 1 tên hoạt động 
+                        # thì không lấy
+                        if  name_activity.find(' '.join(list_sentence_token_match)) > 0:
+                            check_in_name = True
+                            break
+                    if check_in_name == True:
+                        continue
+                
+                if entity_name == "holder":
+                    # nếu holder mà trước đó có từ chỉ nơi chốn : ở, tại => không là holder mà là  
+                    # name_place
+                    if end_common_index - longest_common_length >= 0:
+                        if list_sentence_token[end_common_index - longest_common_length] in ["ở","tại","trước","sau","trong"]:
+                            if 'name_place' in result_entity_dict:
+            #                     result_entity_dict[entity_name].append(list_entity[greatest_entity_index])
+                                result_entity_dict['name_place'].append(' '.join(list_sentence_token_match))
+                            else:
+            #                     result_entity_dict[entity_name] = [list_entity[greatest_entity_index]]
+                                result_entity_dict['name_place'] = [' '.join(list_sentence_token_match)]
+                            list_sentence_token[end_common_index - longest_common_length +1 :end_common_index +1] = ["✪"]*longest_common_length
+                            normalized_input_sentence = ' '.join(list_sentence_token)
+                            continue
+
 #                 print("2. list_sentence_token_match : {0}".format(list_sentence_token_match))
                 list_temp_longest_entity_token = list_entity[longest_common_entity_index].split(' ')
 #                 print("3. list_temp_longest_entity_token : {0}".format(list_temp_longest_entity_token))
@@ -677,22 +709,23 @@ def find_all_entity(intent,input_sentence):
             # print("2. greatest entity : {0}".format(list_entity[greatest_entity_index]))
 #             print("2.1 greatest_end_common_index: {0}".format(greatest_end_common_index))
 #             print("3. sentence match: {0}".format(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1]))
-            if greatest_common_length >= map_entity_name_to_threshold[entity_name] and max_match_entity > matching_threshold:
-                # if entity_name in ['name_activity','type_activity']:
-                #     result = list_entity[greatest_entity_index]
-                # else:
-                #     result = ' '.join(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1])
-                
-                result = ' '.join(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1])
-                if entity_name in result_entity_dict:
-#                     result_entity_dict[entity_name].append(list_entity[greatest_entity_index])
-                    result_entity_dict[entity_name].append(result)
-                else:
-#                     result_entity_dict[entity_name] = [list_entity[greatest_entity_index]]
-                    result_entity_dict[entity_name] = [result]
-#                 list_sentence_token = list_sentence_token[:greatest_end_common_index - greatest_common_length + 1] + list_sentence_token[greatest_end_common_index +1 :]
-                list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1] = ["✪"]*greatest_common_length
-                normalized_input_sentence = ' '.join(list_sentence_token)
+            if greatest_common_length != None:
+                if greatest_common_length >= map_entity_name_to_threshold[entity_name] and max_match_entity > matching_threshold:
+                    # if entity_name in ['name_activity','type_activity']:
+                    #     result = list_entity[greatest_entity_index]
+                    # else:
+                    #     result = ' '.join(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1])
+                    
+                    result = ' '.join(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1])
+                    if entity_name in result_entity_dict:
+    #                     result_entity_dict[entity_name].append(list_entity[greatest_entity_index])
+                        result_entity_dict[entity_name].append(result)
+                    else:
+    #                     result_entity_dict[entity_name] = [list_entity[greatest_entity_index]]
+                        result_entity_dict[entity_name] = [result]
+    #                 list_sentence_token = list_sentence_token[:greatest_end_common_index - greatest_common_length + 1] + list_sentence_token[greatest_end_common_index +1 :]
+                    list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1] = ["✪"]*greatest_common_length
+                    normalized_input_sentence = ' '.join(list_sentence_token)
             catch_entity_threshold_loop = catch_entity_threshold_loop + 1
             # print("output sentence: {0}".format(normalized_input_sentence))
     return result_entity_dict
@@ -710,7 +743,11 @@ def process_message_to_user_request(message,state_tracker):
             user_action['inform_slots'] = result_entity_dict
             user_action['request_slots'] = {intent:'UNK'}
         elif intent == 'not intent':
-            result_entity_dict = find_all_entity(intent,processed_message)
+            #get agent request key for user to inform (not intent)
+            last_agent_action = state_tracker.history[-1]
+            if len(list(last_agent_action['request_slots'].keys())) > 0:
+                agent_request_key = list(last_agent_action['request_slots'].keys())[0]
+            result_entity_dict = find_all_entity(agent_request_key+"_inform",processed_message)
             user_action['intent'] = 'inform'
             user_action['inform_slots'] = result_entity_dict
             user_action['request_slots'] = {}
@@ -755,8 +792,9 @@ if __name__ == '__main__':
     # output_test_file.write("Success rate: {0} %".format(100*float(num_success_testcases)/num_testcases))
     # output_test_file.close()
     # testcase_file.close()
-    print(catch_intent("cái gì cũng được"))
+    # print(catch_intent("cái gì cũng được"))
     # print(process_message_to_user_request("cho mình xin thông tin đăng kí mùa hè xanh khoa máy tính"))
     # print(find_all_entity("joiner","mình thích âm nhạc thì đi mùa hè xanh khoa máy tính được không",list_extra_word))
     # print(list_extra_word)
     # print(vocab.stoi["sẻ"])
+    pass

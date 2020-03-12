@@ -99,7 +99,7 @@ list_thanks_notification = ["cảm ơn","tks","thanks",'thank']
 list_anything_notification = ["sao cũng được","gì cũng được","anything","s cũng được",'j cũng được']
 
 #dictionary
-with open('real_dict_2000.json','r') as real_dict_file:
+with open('real_dict_2000_new_only_delete_question_noti_new_and_space.json','r') as real_dict_file:
     real_dict = json.load(real_dict_file)
 
 with open('list_constants.json','r') as list_file:
@@ -112,37 +112,56 @@ with open('list_constants.json','r') as list_file:
 
 #works -> []
 map_intent_to_list_order_entity_name = {
-    'time':['holder', 'time','name_activity', 'type_activity', \
+    'time':['time', 'type_activity', 'name_activity','holder', \
                             'name_place', 'address'],
-    'name_activity':['holder','time','name_activity', 'type_activity',  \
+    'name_activity':['time', 'type_activity','name_activity', 'holder', \
                             'name_place', 'address','reward','works'],
-    'type_activity':['holder','time','name_activity', 'type_activity',  \
+    'type_activity':['time', 'type_activity','name_activity','holder',  \
                             'name_place', 'address', 'works'\
                             , 'reward'],
-    'holder':['holder','time','name_activity', 'type_activity',  \
+    'holder':['time', 'type_activity','name_activity', 'holder', \
                             'name_place', 'address'],
-    'name_place':['holder','name_place','time','name_activity', 'type_activity',  \
+    'name_place':['time', 'type_activity','name_activity', 'holder','name_place', \
                              'address'],
-    'address':['holder','address','time','name_activity', 'type_activity',  \
+    'address':['address','time', 'type_activity','name_activity', 'holder', \
                             'name_place'],
-    'contact':['holder','contact', 'time','name_activity', 'type_activity',  \
+    'contact':['contact', 'time', 'type_activity','name_activity','holder',  \
                             'name_place', 'address'],
-    'works':['holder','time','name_activity', 'type_activity', 'works', \
+    'works':['time', 'type_activity','name_activity','holder', 'works', \
                             'name_place', 'address'],
-    'register':['holder','time','name_activity', 'type_activity',  \
+    'register':['time', 'type_activity','name_activity','holder',  \
                             'name_place', 'address','register'],
-    'reward':['holder','name_activity', 'type_activity','reward','time', \
+    'reward':[ 'type_activity','name_activity','holder','reward','time', \
                             'name_place', 'address'],
-    'joiner':['time','holder','name_activity', 'type_activity','joiner', \
+    'joiner':['time', 'type_activity','name_activity','holder','joiner', \
                             'name_place', 'address'\
                             ],\
-    'activity':['time','holder','name_activity', 'type_activity', \
+    'activity':['time', 'type_activity','name_activity','holder', \
                             'name_place', 'address'\
                             ],\
-    'not intent':['time','holder','name_activity', 'type_activity', \
+    'not intent':['time', 'type_activity','name_activity','holder', \
                             'name_place', 'address','contact','register','reward','joiner','works'\
-                            ]
+                            ],
+    'time_inform':['time'],
+    'name_activity_inform':['name_activity'],
+    'type_activity_inform':['type_activity'],
+    'holder_inform':['holder'],
+    'name_place_inform':['name_place'],
+    'address_inform':['address'],
+    'contact_inform':['contact'],
+    'works_inform':['works'],
+    'register_inform':['register'],
+    'reward_inform':['reward'],
+    'joiner_inform':['joiner']
 }
 
+response_to_user_free_style = {
+    'hello':["Chào bạn ^^ ! Chúc bạn một ngày tốt lành nè .",\
+            "OK chào bạn nè ^^. Cần mình hỗ trợ gì nè ? :3"
+        ],
+    'other':["Huhu xin lỗi mình không hiểu ý bạn lắm :'( :'( ",\
+            "Xin lỗi bạn, mình không hiểu ý bạn lắm nè ^^"
+        ]
+}
 if __name__ == '__main__':
     print(CLASSES)

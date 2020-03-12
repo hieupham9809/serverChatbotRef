@@ -15,6 +15,7 @@ from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 from temp_agent_action_gen import *
+from data_utils.constants import *
 from message_handler import *
 from agen_response_gen import *
 from dqn_agent import DQNAgent
@@ -62,10 +63,17 @@ def process_conversation_POST(state_tracker_id, message):
     user_action = process_message_to_user_request(message,state_tracker)
     print("-----------------------------------user action")
     print(user_action)
-    dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)    
-    agent_act = get_agent_response(state_tracker, dqn_agent, user_action)
-    StateTracker_Container[state_tracker_id] = state_tracker
-    return response_craft(agent_act, state_tracker),agent_act
+    
+    if user_action['intent'] not in ["hello","other"] :
+        dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)    
+        agent_act = get_agent_response(state_tracker, dqn_agent, user_action)
+        StateTracker_Container[state_tracker_id] = state_tracker
+        agent_message = response_craft(agent_act, state_tracker)
+    else:
+        # to prevent key error
+        agent_act = {'intent':user_action['intent'],'request_slots':[],'inform_slots':[]}
+        agent_message = random.choice(response_to_user_free_style[user_action['intent']])
+    return agent_message,agent_act
 # In[14]:
 @app.route('/')
 def index():
@@ -111,9 +119,42 @@ def post_api_cse_assistant():
         state_tracker_id = input_data["state_tracker_id"]
     print(StateTracker_Container)
     K.clear_session()
+    current_informs = {}
     agent_message , agent_action = process_conversation_POST(state_tracker_id, message)
+    if agent_action['intent'] in ["match_found","inform"]:
+        current_informs = StateTracker_Container[state_tracker_id].current_informs
     K.clear_session()
-    return jsonify({"code": 200, "message": agent_message,"state_tracker_id":state_tracker_id,"agent_action":agent_action})
+    return jsonify({"code": 200, "message": agent_message,"state_tracker_id":state_tracker_id,"agent_action":agent_action,"current_informs":current_informs})
+
+@app.route('/api/cse-assistant-conversation-manager/reset-state-tracker', methods=['POST'])
+def post_api_cse_assistant_reset_state_tracker():
+    input_data = request.json
+    
+    if "state_tracker_id" not in input_data.keys(): 
+        return msg(400, "Message cannot be None")
+    else:
+        state_tracker_id = input_data["state_tracker_id"]
+    print("-------------------------state_tracker_id")
+    print(state_tracker_id)
+    # if "state_tracker_id" not in input_data.keys(): 
+    #     state_tracker_id = get_new_id()
+    # else:
+    #     state_tracker_id = input_data["state_tracker_id"]
+    print(StateTracker_Container)
+    K.clear_session()
+
+    if state_tracker_id in StateTracker_Container:
+        state_tracker = StateTracker_Container[state_tracker_id]
+        state_tracker.reset()
+        StateTracker_Container[state_tracker_id] = state_tracker
+        message = "success"
+        code = 200
+    else:
+        message = "fail"
+        code = 404
+    K.clear_session()
+    return jsonify({"code": code, "message": message,"state_tracker_id":state_tracker_id})
+
 
 @app.route('/api/LT-conversation-manager/extract-information', methods=['POST'])
 def post_api_extract_information():
