@@ -12,14 +12,11 @@ class StateTracker:
     def __init__(self, database, constants):
         """
         The constructor of StateTracker.
-
         The constructor of StateTracker which creates a DB query object, creates necessary state rep. dicts, etc. and
         calls reset.
-
         Parameters:
             database (dict): The database with format dict(long: dict)
             constants (dict): Loaded constants in dict
-
         """
 
         self.db_helper = DBQuery(database)
@@ -56,16 +53,12 @@ class StateTracker:
     def get_state(self, done=False):
         """
         Returns the state representation as a numpy array which is fed into the agent's neural network.
-
         The state representation contains useful information for the agent about the current state of the conversation.
         Processes by the agent to be fed into the neural network. Ripe for experimentation and optimization.
-
         Parameters:
             done (bool): Indicates whether this is the last dialogue in the episode/conversation. Default: False
-
         Returns:
             numpy.array: A numpy array of shape (state size,)
-
         """
 
         # If done then fill state with zeros
@@ -194,15 +187,12 @@ class StateTracker:
     def update_state_agent(self, agent_action):
         """
         Updates the dialogue history with the agent's action and augments the agent's action.
-
         Takes an agent action and updates the history. Also augments the agent_action param with query information and
         any other necessary information.
-
         Parameters:
             agent_action (dict): The agent action of format dict('intent': string, 'inform_slots': dict,
                                  'request_slots': dict) and changed to dict('intent': '', 'inform_slots': {},
                                  'request_slots': {}, 'round': int, 'speaker': 'Agent')
-
         """
 
         if agent_action['intent'] == 'inform':
@@ -263,14 +253,11 @@ class StateTracker:
     def update_state_user(self, user_action):
         """
         Updates the dialogue history with the user's action and augments the user's action.
-
         Takes a user action and updates the history. Also augments the user_action param with necessary information.
-
         Parameters:
             user_action (dict): The user action of format dict('intent': string, 'inform_slots': dict,
                                  'request_slots': dict) and changed to dict('intent': '', 'inform_slots': {},
                                  'request_slots': {}, 'round': int, 'speaker': 'User')
-
         """
 
         for key, value in user_action['inform_slots'].items():

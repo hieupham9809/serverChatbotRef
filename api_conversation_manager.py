@@ -117,9 +117,9 @@ def post_api_cse_assistant():
         state_tracker_id = get_new_id()
     else:
         state_tracker_id = input_data["state_tracker_id"]
-    print(StateTracker_Container)
+    # print(StateTracker_Container)
     K.clear_session()
-    current_informs = {}
+    current_informs = 'null'
     agent_message , agent_action = process_conversation_POST(state_tracker_id, message)
     if agent_action['intent'] in ["match_found","inform"]:
         current_informs = StateTracker_Container[state_tracker_id].current_informs
@@ -134,13 +134,13 @@ def post_api_cse_assistant_reset_state_tracker():
         return msg(400, "Message cannot be None")
     else:
         state_tracker_id = input_data["state_tracker_id"]
-    print("-------------------------state_tracker_id")
-    print(state_tracker_id)
-    # if "state_tracker_id" not in input_data.keys(): 
-    #     state_tracker_id = get_new_id()
-    # else:
-    #     state_tracker_id = input_data["state_tracker_id"]
-    print(StateTracker_Container)
+    # print("-------------------------state_tracker_id")
+    # print(state_tracker_id)
+    # # if "state_tracker_id" not in input_data.keys(): 
+    # #     state_tracker_id = get_new_id()
+    # # else:
+    # #     state_tracker_id = input_data["state_tracker_id"]
+    # print(StateTracker_Container)
     K.clear_session()
 
     if state_tracker_id in StateTracker_Container:

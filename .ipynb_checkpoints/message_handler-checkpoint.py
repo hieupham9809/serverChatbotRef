@@ -608,22 +608,22 @@ def find_all_entity(intent,input_sentence):
     for entity_name in map_intent_to_list_order_entity_name[intent]:
         ordered_real_dict[entity_name] = real_dict[entity_name]
     for entity_name, list_entity in ordered_real_dict.items():
-        print(entity_name)
+        # print(entity_name)
         list_entity = [entity.lower() for entity in list_entity]
-        print("input sentence: {0}".format(normalized_input_sentence))
+        # print("input sentence: {0}".format(normalized_input_sentence))
         if entity_name in ["works","register","reward"]:
             matching_threshold = 0.15
         elif entity_name == "joiner":
             matching_threshold = 0.2
         else:
             matching_threshold = 0.5
-        # print("000. sentence:{0}".format(normalized_input_sentence))
+        print("000. sentence:{0}".format(normalized_input_sentence))
         catch_entity_threshold_loop = 0
         while True:
             if catch_entity_threshold_loop > 5:
                 break
             list_dict_longest_common_entity = find_entity_longest_common(normalized_input_sentence,list_entity,entity_name)
-            print(list_dict_longest_common_entity)
+#             print(list_dict_longest_common_entity)
                 #     [{'longest_common_entity_index': 0,
                 #   'longest_common_length': 3,
                 #   'end_common_index': 9}]
@@ -670,38 +670,20 @@ def find_all_entity(intent,input_sentence):
                         if check_in_name == True:
                             continue
                 
-            #     if entity_name == "holder":
-            #         # nếu holder mà trước đó có từ chỉ nơi chốn : ở, tại => không là holder mà là  
-            #         # name_place
-            #         if end_common_index - longest_common_length >= 0:
-            #             if list_sentence_token[end_common_index - longest_common_length] in ["ở","tại","trước","sau","trong"]:
-            #                 if 'name_place' in result_entity_dict:
-            # #                     result_entity_dict[entity_name].append(list_entity[greatest_entity_index])
-            #                     result_entity_dict['name_place'].append(' '.join(list_sentence_token_match))
-            #                 else:
-            # #                     result_entity_dict[entity_name] = [list_entity[greatest_entity_index]]
-            #                     result_entity_dict['name_place'] = [' '.join(list_sentence_token_match)]
-            #                 list_sentence_token[end_common_index - longest_common_length +1 :end_common_index +1] = ["✪"]*longest_common_length
-            #                 normalized_input_sentence = ' '.join(list_sentence_token)
-            #                 continue
-
-                if entity_name == "name_place":
-                    # nếu name_place mà trước đó có từ chỉ nơi chốn : ở, tại hoặc sau đó có "là địa điểm","là nơi","là chỗ"=>  
+                if entity_name == "holder":
+                    # nếu holder mà trước đó có từ chỉ nơi chốn : ở, tại => không là holder mà là  
                     # name_place
                     if end_common_index - longest_common_length >= 0:
-                        if list_sentence_token[end_common_index - longest_common_length] not in ["ở","tại","trước","sau","trong"]:
-                            if end_common_index + 2 <= len(list_sentence_token):
-                                if not (list_sentence_token[end_common_index+1] == "là" and list_sentence_token[end_common_index+2] in ["địa","nơi","chỗ"]):
-                                    if 'holder' in result_entity_dict:
-                    #                     result_entity_dict[entity_name].append(list_entity[greatest_entity_index])
-                                        result_entity_dict['holder'].append(' '.join(list_sentence_token_match))
-                                    else:
-                    #                     result_entity_dict[entity_name] = [list_entity[greatest_entity_index]]
-                                        result_entity_dict['holder'] = [' '.join(list_sentence_token_match)]
-                                    list_sentence_token[end_common_index - longest_common_length +1 :end_common_index +1] = ["✪"]*longest_common_length
-                                    normalized_input_sentence = ' '.join(list_sentence_token)
-                                    continue
-                            
+                        if list_sentence_token[end_common_index - longest_common_length] in ["ở","tại","trước","sau","trong"]:
+                            if 'name_place' in result_entity_dict:
+            #                     result_entity_dict[entity_name].append(list_entity[greatest_entity_index])
+                                result_entity_dict['name_place'].append(' '.join(list_sentence_token_match))
+                            else:
+            #                     result_entity_dict[entity_name] = [list_entity[greatest_entity_index]]
+                                result_entity_dict['name_place'] = [' '.join(list_sentence_token_match)]
+                            list_sentence_token[end_common_index - longest_common_length +1 :end_common_index +1] = ["✪"]*longest_common_length
+                            normalized_input_sentence = ' '.join(list_sentence_token)
+                            continue
 
 #                 print("2. list_sentence_token_match : {0}".format(list_sentence_token_match))
                 list_temp_longest_entity_token = list_entity[longest_common_entity_index].split(' ')

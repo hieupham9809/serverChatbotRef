@@ -1,7 +1,7 @@
 {
     "db_file_paths": {
-      "database": "temp_data/real_db_915.json",
-      "dict": "data/activity_dict_newest.json",
+      "database": "temp_data/real_db_769.json",
+      "dict": "real_dict_2000_new_only_delete_question_noti_new_and_space.json",
       "user_goals": "data/activity_user_goals_limited_slots_multi_req_slots_merge_address_1400.json"
     },
     "run": {

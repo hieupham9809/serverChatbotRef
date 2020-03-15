@@ -182,8 +182,8 @@ class DBQuery:
 
         #   print("no match: ")
           # print(new_constraints)
-        print("-----------------------------available_options")
-        print(available_options)
+        # print("-----------------------------available_options")
+        # print(available_options)
  
         return available_options
 

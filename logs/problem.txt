@@ -1,0 +1,15 @@
+testcase: ban tổ chức của hoạt động ngày huấn luện tâm trí tín ở 305 b1 là ai 
+305 b1 không có trong dictionary của name_place nên không bắt được
+=> xác định các name entity mà dùng để loại data khỏi database, các name entity cần bắt regex trước r mới bắt matching
+
+test 2:
+cho mình hỏi đối tượng tham gia của hoạt động an toàn thực phẩm và an ninh lương thực
+
+
+THIET KE API ADMIN:
+update by id (ez)
+insert (ez)
+select all limit (ez)
+delete by id (ez)
+select by constraint (chuc nang search)
+select theo thoi gian dia diem cua map (hard)
