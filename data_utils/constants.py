@@ -96,7 +96,7 @@ list_verb_have=["có","được"]
 list_hello_notification = [" hi ","hello","chào","helo"]
 list_done_notification = ["bye","tạm biệt","bai","gặp lại"] 
 list_thanks_notification = ["cảm ơn","tks","thanks",'thank']
-list_anything_notification = ["sao cũng được","gì cũng được","anything","s cũng được",'j cũng được']
+list_anything_notification = ["sao cũng được","gì cũng được","anything","s cũng được",'j cũng được',"không biết","k biết","ko biết","không nhớ","ko nhớ","k nhớ","không rõ","k rõ","ko rõ"]
 
 
 
