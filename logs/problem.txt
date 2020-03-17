@@ -5,7 +5,21 @@ testcase: ban tổ chức của hoạt động ngày huấn luện tâm trí tí
 test 2:
 cho mình hỏi đối tượng tham gia của hoạt động an toàn thực phẩm và an ninh lương thực
 
-
++ fix lỗi dấu sao (done)
++ fix lỗi assignment 
++ fix tên ra trước (done)
++ fix bắt sai intent
++ fix bắt sai entity
++ thêm detect câu confirm và trả về thông tin confirm: detect intent có trong entity bắt dc r 
+lấy nó ra trả về riêng entity đó
++ bị sai logic chỗ bắt type_activity => thử chỉnh bắt name trc rồi comment type activity
++ trường hợp "ban chỉ huy"
++ hỗ trợ trong holder (trung tâm hỗ trợ) overlap với work (hỗ trợ xxx), overlap với cả reward, type
++ tân sinh viên bị overlap với tên hoạt động (overlap giữa name với joiner) => dùng indicator (có được đi,
+có được tham dự, có được tham gia, được tham dự, được tham gia, được đi)
++ 'tham dự' thành reward 
+cho mình xin thông tin địa điểm của hoạt động gia sư tình bạn - hóa đại cương 2 nha
+tên hoạt động thiếu số 2 dù trong dictionary có
 THIET KE API ADMIN:
 update by id (ez)
 insert (ez)

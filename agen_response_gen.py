@@ -1,6 +1,6 @@
 import re
 import random
-
+from message_handler import check_match_sublist_and_substring
 
 
 GREETING = [
@@ -134,7 +134,7 @@ AGENT_INFORM_OBJECT = {
     "activity": "hoạt động"
 }
 
-def response_craft(agent_action, state_tracker, isGreeting=False):
+def response_craft(agent_action, state_tracker, confirm_obj,isGreeting=False):
     if isGreeting:
         return random.choice(GREETING)
     agent_intent = agent_action['intent']
@@ -176,14 +176,31 @@ def response_craft(agent_action, state_tracker, isGreeting=False):
             
             sentence_pattern = random.choice(MATCH_FOUND['found'])
             sentence = sentence_pattern.replace("*found_slot*", AGENT_INFORM_OBJECT[inform_slot])
+            #nếu là câu hỏi intent confirm thì cần response lại mà match hay không
+            print("-------------------------------inform slot :{}".format(inform_slot))
+            response_match = ''
+            if confirm_obj != None:
+                check_match = check_match_sublist_and_substring(confirm_obj[inform_slot],first_result_data[inform_slot])
+                value_match = ''
+                if len(confirm_obj[inform_slot]) > 1:
+                    value_match = ',\n'.join(confirm_obj[inform_slot])
+                else:
+                    value_match = confirm_obj[inform_slot][0]
+                if check_match:
+                    response_match = "\n \n Đúng rồi! {0} là {1}".format(AGENT_INFORM_OBJECT[inform_slot],value_match)
+                else:
+                    response_match = "\n \n Sai rồi! {0} không là {1}".format(AGENT_INFORM_OBJECT[inform_slot],value_match)
             if len(first_result_data[inform_slot]) > 1:
                 inform_value = ",\n".join(first_result_data[inform_slot])
                 sentence = sentence.replace("*found_slot_instance*", "\n\"{}\"".format(inform_value))
-
-            else:
+            elif len(first_result_data[inform_slot]) == 1:
                 inform_value = first_result_data[inform_slot][0]
                 sentence = sentence.replace("*found_slot_instance*", "\"{}\"".format(inform_value))
+            else: #slot mà user request của kết quả trả về là list rỗng  
+                # inform_value = "không có thông tin này"
+                sentence = EMPTY_SLOT[0].replace("*request_slot*",inform_slot)
 
+            sentence += response_match
     return sentence
 
 # print(response_craft({'intent': 'inform', 'inform_slots': {'holder': ['đội công tác xã hội']}, 'request_slots': {}, 'round': 1, 'speaker': 'Agent'}))

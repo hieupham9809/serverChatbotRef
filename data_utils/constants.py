@@ -98,8 +98,17 @@ list_done_notification = ["bye","tạm biệt","bai","gặp lại"]
 list_thanks_notification = ["cảm ơn","tks","thanks",'thank']
 list_anything_notification = ["sao cũng được","gì cũng được","anything","s cũng được",'j cũng được']
 
+
+
+#indicator
+list_joiner_indicator = ["có được tham gia","có được tham dự","có được đi",\
+                        "được tham gia","được tham dự","được đi","tham gia","tham dự"]
+
+
+
+
 #dictionary
-with open('real_dict_2000_new_only_delete_question_noti_new_and_space.json','r') as real_dict_file:
+with open('real_dict_2000_new_only_delete_question_noti_new_and_space_newest.json','r') as real_dict_file:
     real_dict = json.load(real_dict_file)
 
 with open('list_constants.json','r') as list_file:
@@ -112,34 +121,34 @@ with open('list_constants.json','r') as list_file:
 
 #works -> []
 map_intent_to_list_order_entity_name = {
-    'time':['time', 'type_activity', 'name_activity','name_place', \
+    'time':['name_activity','type_activity', 'time','name_place', \
                             'holder', 'address'],
-    'name_activity':['time', 'type_activity','name_activity', 'name_place', \
+    'name_activity':['name_activity','type_activity', 'time', 'name_place', \
                             'holder', 'address','reward','works'],
-    'type_activity':['time', 'type_activity','name_activity','name_place',  \
+    'type_activity':['name_activity','type_activity','time', 'name_place',  \
                             'holder', 'address', 'works'\
                             , 'reward'],
-    'holder':['time', 'type_activity','name_activity', 'name_place', \
+    'holder':['name_activity', 'type_activity','time', 'name_place', \
                             'holder', 'address'],
-    'name_place':['time', 'type_activity','name_activity', 'name_place','holder', \
+    'name_place':['name_activity','type_activity','time',  'name_place','holder', \
                              'address'],
-    'address':['address','time', 'type_activity','name_activity', 'name_place', \
+    'address':['address', 'name_activity','type_activity','time', 'name_place', \
                             'holder'],
-    'contact':['contact', 'time', 'type_activity','name_activity','name_place',  \
+    'contact':['contact','name_activity', 'type_activity','time', 'name_place',  \
                             'holder', 'address'],
-    'works':['time', 'type_activity','name_activity','name_place', 'works', \
+    'works':['name_activity','type_activity','time', 'name_place', 'works', \
                             'holder', 'address'],
-    'register':['time', 'type_activity','name_activity','name_place',  \
+    'register':['name_activity','type_activity','time', 'name_place',  \
                             'holder', 'address','register'],
-    'reward':[ 'type_activity','name_activity','name_place','reward','time', \
+    'reward':[ 'name_activity','type_activity','name_place','reward','time', \
                             'holder', 'address'],
-    'joiner':['time', 'type_activity','name_activity','name_place','joiner', \
+    'joiner':['name_activity', 'type_activity','time','name_place','joiner', \
                             'holder', 'address'\
                             ],\
-    'activity':['time', 'type_activity','name_activity','name_place', \
-                            'holder', 'address'\
+    'activity':['name_activity', 'type_activity','time','name_place', \
+                            'reward','holder', 'address'\
                             ],\
-    'not intent':['time', 'type_activity','name_activity','name_place', \
+    'not intent':['name_activity','type_activity','time', 'name_place', \
                             'holder', 'address','contact','register','reward','joiner','works'\
                             ],
     'time_inform':['time'],

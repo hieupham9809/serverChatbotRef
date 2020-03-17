@@ -16,9 +16,9 @@ state_tracker = StateTracker(database, constants)
 dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)
 #TEST
 if __name__ == '__main__':
-    #================================ FILE TEST
+    # #================================ FILE TEST
     # testcase_file= open("logs/testcase_user_action.txt","r",encoding='utf-8')
-    # output_test_file=open("logs/output_testcase_user_action.txt","w+",encoding='utf-8')
+    # output_test_file=open("logs/output_testcase_user_action_name_before_type_and_time.txt","w+",encoding='utf-8')
     # testcases=testcase_file.readlines()
     # num_success_testcases=0
     # num_testcases=len(testcases)
@@ -35,6 +35,6 @@ if __name__ == '__main__':
     #     print(i)
 
     #================================SINGLE TEST
-    print(process_message_to_user_request("khi nào thì diễn ra hiến máu tình nguyện đợt ii ở hội trường lớn đh ngân hàng vậy",state_tracker))
+    print(process_message_to_user_request("đi vì đàn em thân yêu là thực hiện công trình đúng không vậy bạn",state_tracker))
 
     

@@ -23,6 +23,8 @@ from agent_utils.state_tracker import StateTracker
 from keras import backend as K
 app = Flask(__name__)
 CORS(app)
+
+################## {state_tracker_id:(state_tracker,confirm_obj),}
 StateTracker_Container = dict()
 
 app.config["MONGO_URI"] = "mongodb://caochanhduong:bikhungha1@ds261626.mlab.com:61626/activity?retryWrites=false"
@@ -54,21 +56,29 @@ def process_conversation_POST(state_tracker_id, message):
     state_tracker = None
     
     if state_tracker_id in StateTracker_Container.keys():
-        state_tracker = StateTracker_Container[state_tracker_id]
+        state_tracker = StateTracker_Container[state_tracker_id][0]
+        confirm_obj = StateTracker_Container[state_tracker_id][1]
     else:
-        print("---------------------------------in model")
+        # print("---------------------------------in model")
         state_tracker = StateTracker(database, constants)
-        StateTracker_Container[state_tracker_id] = state_tracker
+        confirm_obj = None
+        StateTracker_Container[state_tracker_id] = (state_tracker, confirm_obj)
         
-    user_action = process_message_to_user_request(message,state_tracker)
+        
+    user_action, new_confirm_obj = process_message_to_user_request(message,state_tracker)
     print("-----------------------------------user action")
     print(user_action)
-    
+    #nếu là câu request mới của user thì reset state tracker
+    if user_action['request_slots'] != {}:
+        state_tracker.reset()
+    #nếu có câu confirm request mới thì ghi đè
+    if new_confirm_obj != None:
+        confirm_obj = new_confirm_obj
     if user_action['intent'] not in ["hello","other"] :
         dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)    
         agent_act = get_agent_response(state_tracker, dqn_agent, user_action)
-        StateTracker_Container[state_tracker_id] = state_tracker
-        agent_message = response_craft(agent_act, state_tracker)
+        StateTracker_Container[state_tracker_id] = (state_tracker,confirm_obj)
+        agent_message = response_craft(agent_act, state_tracker,confirm_obj)
     else:
         # to prevent key error
         agent_act = {'intent':user_action['intent'],'request_slots':[],'inform_slots':[]}
@@ -122,7 +132,7 @@ def post_api_cse_assistant():
     current_informs = 'null'
     agent_message , agent_action = process_conversation_POST(state_tracker_id, message)
     if agent_action['intent'] in ["match_found","inform"]:
-        current_informs = StateTracker_Container[state_tracker_id].current_informs
+        current_informs = StateTracker_Container[state_tracker_id][0].current_informs
     K.clear_session()
     return jsonify({"code": 200, "message": agent_message,"state_tracker_id":state_tracker_id,"agent_action":agent_action,"current_informs":current_informs})
 
@@ -144,9 +154,9 @@ def post_api_cse_assistant_reset_state_tracker():
     K.clear_session()
 
     if state_tracker_id in StateTracker_Container:
-        state_tracker = StateTracker_Container[state_tracker_id]
+        state_tracker = StateTracker_Container[state_tracker_id][0]
         state_tracker.reset()
-        StateTracker_Container[state_tracker_id] = state_tracker
+        StateTracker_Container[state_tracker_id] = (state_tracker,None)
         message = "success"
         code = 200
     else:
