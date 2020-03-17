@@ -178,6 +178,7 @@ def response_craft(agent_action, state_tracker, confirm_obj,isGreeting=False):
             sentence = sentence_pattern.replace("*found_slot*", AGENT_INFORM_OBJECT[inform_slot])
             #nếu là câu hỏi intent confirm thì cần response lại mà match hay không
             print("-------------------------------inform slot :{}".format(inform_slot))
+            print("---------------------------------confirm obj: {}".format(confirm_obj))
             response_match = ''
             if confirm_obj != None:
                 check_match = check_match_sublist_and_substring(confirm_obj[inform_slot],first_result_data[inform_slot])

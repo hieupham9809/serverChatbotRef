@@ -633,9 +633,9 @@ def find_all_entity(intent,input_sentence):
     for entity_name in map_intent_to_list_order_entity_name[intent]:
         ordered_real_dict[entity_name] = real_dict[entity_name]
     for entity_name, list_entity in ordered_real_dict.items():
-        # print(entity_name)
+        print(entity_name)
         list_entity = [entity.lower() for entity in list_entity]
-        # print("input sentence: {0}".format(normalized_input_sentence))
+        print("input sentence: {0}".format(normalized_input_sentence))
         if entity_name in ["works","register","reward"]:
             matching_threshold = 0.15
         elif entity_name == "joiner":
@@ -648,7 +648,7 @@ def find_all_entity(intent,input_sentence):
             if catch_entity_threshold_loop > 5:
                 break
             list_dict_longest_common_entity = find_entity_longest_common(normalized_input_sentence,list_entity,entity_name)
-            # print(list_dict_longest_common_entity)
+            print(list_dict_longest_common_entity)
                 #     [{'longest_common_entity_index': 0,
                 #   'longest_common_length': 3,
                 #   'end_common_index': 9}]
@@ -756,8 +756,8 @@ def find_all_entity(intent,input_sentence):
 #             print("end_common_index: {0}".format(end_common_index))
 #             print("1. greatest_common_length : {0}".format(greatest_common_length))
             # print(max_match_entity)
-            # if greatest_entity_index != None:
-            #     print("2. greatest entity : {0}".format(list_entity[greatest_entity_index]))
+            if greatest_entity_index != None:
+                print("2. greatest entity : {0}".format(list_entity[greatest_entity_index]))
 #             print("2.1 greatest_end_common_index: {0}".format(greatest_end_common_index))
 #             print("3. sentence match: {0}".format(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1]))
             
@@ -811,9 +811,6 @@ def find_all_entity(intent,input_sentence):
                             list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1] = ["✪"]*greatest_common_length
                             normalized_input_sentence = ' '.join(list_sentence_token)
                             continue
-
-
-
                     result = ' '.join(list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1])
                     if entity_name in result_entity_dict:
     #                     result_entity_dict[entity_name].append(list_entity[greatest_entity_index])

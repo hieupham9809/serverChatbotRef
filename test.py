@@ -35,6 +35,6 @@ if __name__ == '__main__':
     #     print(i)
 
     #================================SINGLE TEST
-    print(process_message_to_user_request("đi vì đàn em thân yêu là thực hiện công trình đúng không vậy bạn",state_tracker))
+    print(process_message_to_user_request("hiến máu tình nguyện 2018 là do bệnh viện chợ rẩy tổ chức phải không bạn",state_tracker))
 
     

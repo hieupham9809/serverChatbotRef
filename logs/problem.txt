@@ -20,6 +20,12 @@ có được tham dự, có được tham gia, được tham dự, được tham
 + 'tham dự' thành reward 
 cho mình xin thông tin địa điểm của hoạt động gia sư tình bạn - hóa đại cương 2 nha
 tên hoạt động thiếu số 2 dù trong dictionary có
+
+ban tổ chức của the academia and industry networking 2018 là trường đại học giao thông vận tải tp . hcm phải không bạn
+bắt nhầm đại học giao thông vận tải là tên
+
+chủ động kết nối tìm kiếm học bổng và việc làm: bắt thiếu chữ làm
+bệnh viện chợ: bắt thiếu chữ chợ
 THIET KE API ADMIN:
 update by id (ez)
 insert (ez)
