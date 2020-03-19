@@ -249,12 +249,13 @@ def check_intent(message):
 
 #message -> final output 
 def catch_intent(message):
-    message_preprocessed = re.sub('[\:\_=\+\-\#\@\$\%\$\\(\)\~\@\;\'\|\<\>\]\[\"\–“”…*]',' ',message)
+    message_preprocessed = re.sub('[\:\_=\+\#\@\$\%\$\\(\)\~\@\;\'\|\<\>\]\[\"\–“”…*]',' ',message)
     message_preprocessed=message_preprocessed.replace(',', ' , ')
     message_preprocessed=message_preprocessed.replace('.', ' . ')
     message_preprocessed=message_preprocessed.replace('!', ' ! ')
     message_preprocessed=message_preprocessed.replace('&', ' & ')
     message_preprocessed=message_preprocessed.replace('?', ' ? ')
+    message_preprocessed=message_preprocessed.replace('-', ' - ')
     message_preprocessed = compound2unicode(message_preprocessed)
     list_token=message_preprocessed.split(' ')
     while '' in list_token:
@@ -588,7 +589,7 @@ def find_all_entity(intent,input_sentence):
     normalized_input_sentence = delete_extra_word(normalized_input_sentence,list_extra_word)
     
     result_entity_dict={}
-    list_order_entity_name=map_intent_to_list_order_entity_name[intent]
+    list_order_entity_name = map_intent_to_list_order_entity_name[intent]
     # print(normalized_input_sentence)
     if 'time' in list_order_entity_name:
         for pattern_time in list_pattern_time:
@@ -648,7 +649,7 @@ def find_all_entity(intent,input_sentence):
             if catch_entity_threshold_loop > 5:
                 break
             list_dict_longest_common_entity = find_entity_longest_common(normalized_input_sentence,list_entity,entity_name)
-            print(list_dict_longest_common_entity)
+            # print(list_dict_longest_common_entity)
                 #     [{'longest_common_entity_index': 0,
                 #   'longest_common_length': 3,
                 #   'end_common_index': 9}]
@@ -668,7 +669,7 @@ def find_all_entity(intent,input_sentence):
             greatest_common_length = None
             greatest_end_common_index = None
             max_match_entity = 0.0
-            print("common entity :{0}".format(list_dict_longest_common_entity))
+            # print("common entity :{0}".format(list_dict_longest_common_entity))
             for dict_longest_common_entity in list_dict_longest_common_entity:
 #                 print("0. dict_longest_common_entity: {0}".format(dict_longest_common_entity))
 
@@ -872,8 +873,32 @@ def process_message_to_user_request(message,state_tracker):
             user_action['inform_slots'] = result_entity_dict
             user_action['request_slots'] = {}
         elif intent == 'anything':
-            last_agent_action = state_tracker.history[-1]
-            anything_key = list(last_agent_action['request_slots'].keys())[0]
+            anything_key = None
+            # lấy anything key từ noti 
+            for entity_name, list_noti_anything in map_entity_name_to_list_noti_anything.items():
+                check_match_anything_key = False
+                for noti in list_noti_anything:
+                    if noti in message:
+                        anything_key = entity_name
+                        check_match_anything_key = True
+                        break
+                if check_match_anything_key == False:
+                    continue
+                else:
+                    break
+            
+            #nếu không phải là câu anything dạng có entity thì lấy từ agent request/inform key
+            if anything_key == None: 
+                last_agent_action = state_tracker.history[-1]
+                if len(list(last_agent_action['request_slots'].keys())) > 0:
+                    anything_key = list(last_agent_action['request_slots'].keys())[0]
+                elif len(list(last_agent_action['inform_slots'].keys())) > 0:
+                    anything_key = list(last_agent_action['inform_slots'].keys())[0]
+
+            #nếu vẫn là None thì mặc định là lấy name_activity (để tránh crash server)
+            if anything_key == None:
+                anything_key = "name_activity"
+
             user_action['intent'] = 'inform'
             user_action['inform_slots'] = {anything_key:'anything'}
             user_action['request_slots'] = {}

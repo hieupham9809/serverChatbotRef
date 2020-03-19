@@ -28,7 +28,7 @@ def get_greeting_statement():
 
 MATCH_FOUND = {
     'found': [
-        "Thông tin *found_slot* bạn cần: *found_slot_instance*, bên dưới là hoạt động cụ thể chứa thông tin đó"
+        "Thông tin *found_slot* bạn cần: *found_slot_instance*, bên dưới là hoạt động cụ thể chứa thông tin đó và một số hoạt động khác cũng thỏa điều kiện bạn đưa ra"
     ],
     'not_found': [
         "Mình không tìm thấy bài đăng chứa thông tin *found_slot* mà bạn cần, bạn xem lại các thông tin đã cung cấp dưới đây và điều chỉnh lại giúp mình nhé!"
@@ -176,9 +176,9 @@ def response_craft(agent_action, state_tracker, confirm_obj,isGreeting=False):
             
             sentence_pattern = random.choice(MATCH_FOUND['found'])
             sentence = sentence_pattern.replace("*found_slot*", AGENT_INFORM_OBJECT[inform_slot])
-            #nếu là câu hỏi intent confirm thì cần response lại mà match hay không
-            print("-------------------------------inform slot :{}".format(inform_slot))
-            print("---------------------------------confirm obj: {}".format(confirm_obj))
+            # #nếu là câu hỏi intent confirm thì cần response lại mà match hay không
+            # print("-------------------------------inform slot :{}".format(inform_slot))
+            # print("---------------------------------confirm obj: {}".format(confirm_obj))
             response_match = ''
             if confirm_obj != None:
                 check_match = check_match_sublist_and_substring(confirm_obj[inform_slot],first_result_data[inform_slot])

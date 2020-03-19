@@ -18,7 +18,7 @@ dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)
 if __name__ == '__main__':
     # #================================ FILE TEST
     # testcase_file= open("logs/testcase_user_action.txt","r",encoding='utf-8')
-    # output_test_file=open("logs/output_testcase_user_action_name_before_type_and_time.txt","w+",encoding='utf-8')
+    # output_test_file=open("logs/output_testcase_user_action_name_before_type_and_time_lastest.txt","w+",encoding='utf-8')
     # testcases=testcase_file.readlines()
     # num_success_testcases=0
     # num_testcases=len(testcases)
@@ -35,6 +35,5 @@ if __name__ == '__main__':
     #     print(i)
 
     #================================SINGLE TEST
-    print(process_message_to_user_request("hiến máu tình nguyện 2018 là do bệnh viện chợ rẩy tổ chức phải không bạn",state_tracker))
-
-    
+    print(process_message_to_user_request("cho hỏi lợi ích khi tham gia chương trình khảo sát thể lực của nhà trường",state_tracker))
+    # print(find_all_entity("reward_inform","chủ động kết nối tìm kiếm học bổng và việc làm"))

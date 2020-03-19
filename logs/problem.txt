@@ -6,26 +6,28 @@ test 2:
 cho mình hỏi đối tượng tham gia của hoạt động an toàn thực phẩm và an ninh lương thực
 
 + fix lỗi dấu sao (done)
-+ fix lỗi assignment 
++ fix lỗi assignment (done)
 + fix tên ra trước (done)
++ thêm done thì response luôn k đẩy vô agent (new feature)
 + fix bắt sai intent
 + fix bắt sai entity
 + thêm detect câu confirm và trả về thông tin confirm: detect intent có trong entity bắt dc r 
-lấy nó ra trả về riêng entity đó
+lấy nó ra trả về riêng entity đó (done)
 + bị sai logic chỗ bắt type_activity => thử chỉnh bắt name trc rồi comment type activity
 + trường hợp "ban chỉ huy"
 + hỗ trợ trong holder (trung tâm hỗ trợ) overlap với work (hỗ trợ xxx), overlap với cả reward, type
 + tân sinh viên bị overlap với tên hoạt động (overlap giữa name với joiner) => dùng indicator (có được đi,
 có được tham dự, có được tham gia, được tham dự, được tham gia, được đi)
 + 'tham dự' thành reward 
-cho mình xin thông tin địa điểm của hoạt động gia sư tình bạn - hóa đại cương 2 nha
-tên hoạt động thiếu số 2 dù trong dictionary có
++ xóa hết tất cả đại loại như phải không bạn
+
+tại nhà tập thể thao của nhà trường:name_place nhưng lại có indicator "của" => không dùng indicatior để 
+phân biệt holder với name_place được
 
 ban tổ chức của the academia and industry networking 2018 là trường đại học giao thông vận tải tp . hcm phải không bạn
 bắt nhầm đại học giao thông vận tải là tên
 
-chủ động kết nối tìm kiếm học bổng và việc làm: bắt thiếu chữ làm
-bệnh viện chợ: bắt thiếu chữ chợ
+
 THIET KE API ADMIN:
 update by id (ez)
 insert (ez)

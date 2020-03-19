@@ -96,7 +96,9 @@ list_verb_have=["có","được"]
 list_hello_notification = [" hi ","hello","chào","helo"]
 list_done_notification = ["bye","tạm biệt","bai","gặp lại"] 
 list_thanks_notification = ["cảm ơn","tks","thanks",'thank']
-list_anything_notification = ["sao cũng được","gì cũng được","anything","s cũng được",'j cũng được',"không biết","k biết","ko biết","không nhớ","ko nhớ","k nhớ","không rõ","k rõ","ko rõ"]
+list_anything_notification = ["sao cũng được","gì cũng được","anything","s cũng được",\
+    'j cũng được',"không biết","k biết","ko biết","không nhớ","ko nhớ","k nhớ","không rõ",\
+        "k rõ","ko rõ","cũng được","cũng ok","cũng không sao","cũng dc","cũng k sao","cũng ko sao"]
 
 
 
@@ -104,12 +106,25 @@ list_anything_notification = ["sao cũng được","gì cũng được","anythin
 list_joiner_indicator = ["có được tham gia","có được tham dự","có được đi",\
                         "được tham gia","được tham dự","được đi","tham gia","tham dự"]
 
-
+map_entity_name_to_list_noti_anything = {
+    'time':['thời gian',"lúc"],
+    'name_activity':['tên hoạt động',"tên"],
+    'type_activity':["loại hoạt động","loại"],
+    'holder':["tổ chức","đơn vị"],
+    'name_place':["địa điểm","chỗ","nơi"],
+    'address':["địa chỉ","đường","quận","phường"],
+    'contact':["liên hệ","liên lạc"],
+    'works':["việc","làm"],
+    'register':["đăng ký","đăng kí"],
+    'reward':["thưởng","lợi ích"],
+    'joiner':["đối tượng","ai tham gia","người nào tham gia"]
+}
 
 
 #dictionary
 with open('real_dict_2000_new_only_delete_question_noti_new_and_space_newest.json','r') as real_dict_file:
     real_dict = json.load(real_dict_file)
+    real_dict_file.close()
 
 with open('list_constants.json','r') as list_file:
     list_file_obj = json.load(list_file)
@@ -170,7 +185,12 @@ response_to_user_free_style = {
         ],
     'other':["Huhu xin lỗi mình không hiểu ý bạn lắm :'( :'( ",\
             "Xin lỗi bạn, mình không hiểu ý bạn lắm nè ^^"
-        ]
+        ],
+    'done':[
+        "OK chào tạm biệt nha ^^ ! Rất vui được giúp bạn nè ",
+        "Okie bái bai bạn nè ^^ ! Rất vui được giúp bạn nè ",
+        "Bye bye nha ! :D Rất vui được giúp bạn nè "
+    ]
 }
 if __name__ == '__main__':
     print(CLASSES)

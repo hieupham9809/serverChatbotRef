@@ -75,7 +75,7 @@ def process_conversation_POST(state_tracker_id, message):
     #nếu có câu confirm request mới thì ghi đè
     if new_confirm_obj != None:
         confirm_obj = new_confirm_obj
-    if user_action['intent'] not in ["hello","other"] :
+    if user_action['intent'] not in ["hello","other","done"] :
         dqn_agent = DQNAgent(state_tracker.get_state_size(), constants)    
         agent_act = get_agent_response(state_tracker, dqn_agent, user_action)
         StateTracker_Container[state_tracker_id] = (state_tracker,confirm_obj)
@@ -84,6 +84,10 @@ def process_conversation_POST(state_tracker_id, message):
         # to prevent key error
         agent_act = {'intent':user_action['intent'],'request_slots':[],'inform_slots':[]}
         agent_message = random.choice(response_to_user_free_style[user_action['intent']])
+        #nếu là done thì reset và cho confirm về None
+        if user_action['intent'] == "done":
+            state_tracker.reset()
+            StateTracker_Container[state_tracker_id] = (state_tracker,None)
     return agent_message,agent_act
 # In[14]:
 @app.route('/')
