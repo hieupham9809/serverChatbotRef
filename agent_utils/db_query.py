@@ -1,7 +1,7 @@
 from collections import defaultdict
 from .dialogue_config import no_query_keys, usersim_default_key
 import copy
-from message_handler import compound2unicode
+from message_handler import compound2unicode,preprocess_message
 
 class DBQuery:
     """Queries the database for the state tracker."""
@@ -111,7 +111,7 @@ class DBQuery:
         list_parent = [compound2unicode(x) for x in list_parent]
         for children_value in list_children:
             for parent_value in list_parent:
-                if children_value in parent_value:
+                if preprocess_message(children_value) in preprocess_message(parent_value):
                     count_match+=1
                     break
         if count_match==len(list_children):
@@ -119,9 +119,6 @@ class DBQuery:
             return True
         return False
             
-
-
-
     def get_db_results(self, constraints):
         """
         Get all items in the database that fit the current constraints.

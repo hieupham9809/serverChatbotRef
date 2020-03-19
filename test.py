@@ -35,5 +35,5 @@ if __name__ == '__main__':
     #     print(i)
 
     #================================SINGLE TEST
-    print(process_message_to_user_request("cho hỏi lợi ích khi tham gia chương trình khảo sát thể lực của nhà trường",state_tracker))
+    print(process_message_to_user_request("cho mình hỏi hoạt động xét tuyển vào đại học bách khoa tphcm là được 5 điểm rèn luyện phải không ạ",state_tracker))
     # print(find_all_entity("reward_inform","chủ động kết nối tìm kiếm học bổng và việc làm"))

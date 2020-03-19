@@ -245,22 +245,26 @@ def check_intent(message):
 
     return False
 
-
-
-#message -> final output 
-def catch_intent(message):
-    message_preprocessed = re.sub('[\:\_=\+\#\@\$\%\$\\(\)\~\@\;\'\|\<\>\]\[\"\–“”…*]',' ',message)
-    message_preprocessed=message_preprocessed.replace(',', ' , ')
-    message_preprocessed=message_preprocessed.replace('.', ' . ')
-    message_preprocessed=message_preprocessed.replace('!', ' ! ')
-    message_preprocessed=message_preprocessed.replace('&', ' & ')
-    message_preprocessed=message_preprocessed.replace('?', ' ? ')
-    message_preprocessed=message_preprocessed.replace('-', ' - ')
-    message_preprocessed = compound2unicode(message_preprocessed)
-    list_token=message_preprocessed.split(' ')
+def preprocess_message(message):
+    message = message.lower()
+    message = message.replace(',', ' , ')
+    message = message.replace('.', ' . ')
+    message = message.replace('!', ' ! ')
+    message = message.replace('&', ' & ')
+    message = message.replace('?', ' ? ')
+    message = message.replace('-', ' - ')
+    message = message.replace('(', ' ( ')
+    message = message.replace(')', ' ) ')
+    message = compound2unicode(message)
+    list_token = message.split(' ')
     while '' in list_token:
         list_token.remove('')
-    message_preprocessed=' '.join(list_token)
+    message = ' '.join(list_token)
+    return message
+#message -> final output 
+def catch_intent(message):
+    message = re.sub('[\:\_=\+\#\@\$\%\$\\(\)\~\@\;\'\|\<\>\]\[\"\–“”…*]',' ',message)
+    message_preprocessed = preprocess_message(message)
     #note : vì notification của anything dễ bị nhầm với check intent (do chứa "cái gì","sao")
     # nên check trước
     for notification in list_anything_notification:   
@@ -515,7 +519,7 @@ def find_entity_longest_common(sentence,list_entity,entity_name):
     for index, entity in enumerate(list_normalized_entity):
 #         print(entity)
         list_token_entity = entity.split(' ')
-        if entity_name in ['register','reward','works','joiner']:
+        if entity_name in ['register','reward','works']:
             longest_common_length, max_length_in_sentence, end_common_index = lcs_length_ta(list_token_sentence,list_token_entity)
         else:
             longest_common_length, end_common_index = longest_common_sublist(list_token_sentence,list_token_entity)
@@ -590,7 +594,7 @@ def find_all_entity(intent,input_sentence):
     
     result_entity_dict={}
     list_order_entity_name = map_intent_to_list_order_entity_name[intent]
-    # print(normalized_input_sentence)
+    print(normalized_input_sentence)
     if 'time' in list_order_entity_name:
         for pattern_time in list_pattern_time:
             if re.findall(pattern_time,normalized_input_sentence)!=[]:
@@ -604,6 +608,7 @@ def find_all_entity(intent,input_sentence):
         # if 'time' in result_entity_dict:
         #     print(result_entity_dict['time'])
     if 'reward' in list_order_entity_name:
+        print("hellllllllllllllllllo")
         for pattern_reward in list_pattern_reward:
             if re.findall(pattern_reward,normalized_input_sentence)!=[]:
                 # print("pattern_reward :{0}".format(pattern_reward))
@@ -635,14 +640,14 @@ def find_all_entity(intent,input_sentence):
         ordered_real_dict[entity_name] = real_dict[entity_name]
     for entity_name, list_entity in ordered_real_dict.items():
         print(entity_name)
-        list_entity = [entity.lower() for entity in list_entity]
+        list_entity = [preprocess_message(entity) for entity in list_entity]
         print("input sentence: {0}".format(normalized_input_sentence))
         if entity_name in ["works","register","reward"]:
             matching_threshold = 0.15
         elif entity_name == "joiner":
-            matching_threshold = 0.2
-        else:
             matching_threshold = 0.5
+        else:
+            matching_threshold = 0.8
         # print("000. sentence:{0}".format(normalized_input_sentence))
         catch_entity_threshold_loop = 0
         while True:
@@ -777,6 +782,18 @@ def find_all_entity(intent,input_sentence):
                     if entity_name == "name_place":
                         # nếu name_place mà trước đó có từ chỉ nơi chốn : ở, tại hoặc sau đó có "là địa điểm","là nơi","là chỗ"=>  
                         # name_place, không thì là holder
+                        if "ở" in list_sentence_token_match or "tại" in list_sentence_token_match or "trước" in list_sentence_token_match or "sau" in list_sentence_token_match or "trong" in list_sentence_token_match:
+                            if 'name_place' in result_entity_dict:
+            #                     result_entity_dict[entity_name].append(list_entity[greatest_entity_index])
+                                result_entity_dict['name_place'].append(' '.join(list_sentence_token_match))
+                            else:
+            #                     result_entity_dict[entity_name] = [list_entity[greatest_entity_index]]
+                                result_entity_dict['name_place'] = [' '.join(list_sentence_token_match)]
+                            list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1] = ["✪"]*greatest_common_length
+                            normalized_input_sentence = ' '.join(list_sentence_token)
+                            continue
+
+
                         if greatest_end_common_index - greatest_common_length >= 0:
                             if list_sentence_token[greatest_end_common_index - greatest_common_length] not in ["ở","tại","trước","sau","trong"]:
                                 if greatest_end_common_index + 2 < len(list_sentence_token):
@@ -823,7 +840,7 @@ def find_all_entity(intent,input_sentence):
                     list_sentence_token[greatest_end_common_index - greatest_common_length +1 :greatest_end_common_index +1] = ["✪"]*greatest_common_length
                     normalized_input_sentence = ' '.join(list_sentence_token)
             catch_entity_threshold_loop = catch_entity_threshold_loop + 1
-            # print("output sentence: {0}".format(normalized_input_sentence))
+            print("output sentence: {0}".format(normalized_input_sentence))
         # print("result entity dict : {0}".format(result_entity_dict))
         
         #sau khi bắt xong hết các name_activity thì xóa hết indicator của joiner: được tham gia,được đi,vv
