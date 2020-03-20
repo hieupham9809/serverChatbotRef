@@ -96,6 +96,9 @@ def extract_and_get_intent(message):
     for notification in list_reward_notification:
         if message.lower().find(notification)!=-1:
             return 'reward',1.0,message
+
+    if message.lower().find("được") < message.lower().find("ngày ctxh") or message.lower().find("được") < message.lower().find("ngày công tác xã hội") or message.lower().find("được") < message.lower().find("điểm rèn luyện") or message.lower().find("được") < message.lower().find("đrl") or message.lower().find("được") < message.lower().find("drl"):
+        return 'reward',1.0,message
         
     
     # 5 intent machine learning 
