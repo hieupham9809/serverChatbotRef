@@ -60,13 +60,13 @@ Problem 5: bắt entity joiner không ổn (trong các câu confirm cho joiner) 
 ví dụ: cho mình hỏi đối tượng tham gia của hoạt động an toàn thực phẩm và an ninh lương thực là sinh viên bách khoa phải không bạn
 ({'intent': 'request', 'inform_slots': {'name_activity': ['an toàn thực phẩm và an ninh lương thực'], 'holder': ['bách khoa']}, 'request_slots': {'joiner': 'UNK'}}, {'joiner': ['là sinh viên']})
 
-Problem 6: pattern reward chưa ổn 
+Problem 6: pattern reward chưa ổn => thêm vào pattern (done)
 
 Problem 7: các indicator dùng để phân biệt holder, name_place lại nằm trong cả name_place,holder => chỉnh lại code (done)
 
-Problem 8: entity địa chỉ các tên phường bắt chưa ổn
+Problem 8: entity địa chỉ các tên phường bắt chưa ổn => thêm tất cả tên phường, quận của tphcm và tên 64 tỉnh thành vào dictionary (done)
 
-Problem 9: "hỗ trợ" bị overlap 4 entity 
+Problem 9: "hỗ trợ" bị overlap 4 entity => tạm thời bỏ từ "hỗ trợ" trong loại hoạt động
 THIET KE API ADMIN:
 update by id (ez)
 insert (ez)

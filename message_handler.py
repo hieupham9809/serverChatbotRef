@@ -643,7 +643,7 @@ def find_all_entity(intent,input_sentence):
         list_entity = [preprocess_message(entity) for entity in list_entity]
         print("input sentence: {0}".format(normalized_input_sentence))
         if entity_name in ["works","register","reward"]:
-            matching_threshold = 0.15
+            matching_threshold = 0.5
         elif entity_name == "joiner":
             matching_threshold = 0.5
         else:
